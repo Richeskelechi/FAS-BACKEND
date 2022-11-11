@@ -1,10 +1,19 @@
 import 'dotenv/config'
 import express from 'express';
 import adminRoute from './routes/adminRoutes';
+import cors from 'cors';
 import connectDB from './db/connectDB';
+
+const corsOptions ={
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionSuccessStatus: 200
+}
 
 const app = express();
 
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/admin/api/v1", adminRoute);

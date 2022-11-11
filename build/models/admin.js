@@ -1,8 +1,8 @@
-import { Schema, model } from "mongoose";
-
-import { IAddAdmin } from "../types/addAdminTypes";
-
-const adminSchema = new Schema<IAddAdmin>({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Admin = void 0;
+const mongoose_1 = require("mongoose");
+const adminSchema = new mongoose_1.Schema({
     fullname: {
         type: String,
         trim: true,
@@ -23,11 +23,11 @@ const adminSchema = new Schema<IAddAdmin>({
     password: {
         type: String,
         required: true,
-        select:false,
+        select: false,
         trim: true,
         minlength: 8,
     },
-    access:{
+    access: {
         type: String,
         trim: true,
         required: true,
@@ -35,13 +35,13 @@ const adminSchema = new Schema<IAddAdmin>({
     isActive: {
         type: String,
         trim: true,
-        default:"Active",
+        default: "Active",
     },
     last_login: {
         type: Date,
         trim: true,
         default: Date.now(),
     }
-},{timestamps:true})
-
-export const Admin = model('Admin', adminSchema);  
+}, { timestamps: true });
+exports.Admin = (0, mongoose_1.model)('Admin', adminSchema);
+//# sourceMappingURL=admin.js.map
