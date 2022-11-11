@@ -436,7 +436,6 @@ export const resetPasswordEmailValidateService = async function(adminId: string,
         }
         const {email, newPassword, confirmPassword} = body
         const userEmail = Buffer.from(email,"base64").toString();
-        console.log(userEmail);
         
         const exist = await Admin.findOne({email:userEmail}).select("+password").exec()
         if(!exist){
@@ -446,7 +445,6 @@ export const resetPasswordEmailValidateService = async function(adminId: string,
                 data:'Admin Email does not exist. Please Check the Email And try again'
             }
         }
-        console.log(exist);
         
         const hashedPassword = await bcrypt.hash(newPassword, +process.env.SALT_ROUNDS!)
         exist.password = hashedPassword
