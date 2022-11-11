@@ -1,1 +1,0 @@
-{"version":3,"file":"connectDB.js","sourceRoot":"","sources":["../../src/db/connectDB.ts"],"names":[],"mappings":";;;;;AAAA,wDAAgC;AAEhC,MAAM,SAAS,GAAG,CAAC,GAAU,EAAE,EAAE;IAC7B,OAAO,kBAAQ,CAAC,OAAO,CAAC,GAAG,CAAC,CAAC;AACjC,CAAC,CAAA;AAED,kBAAe,SAAS,CAAA"}
