@@ -1,6 +1,7 @@
-import { IAddAdmin, ILoginAdmin} from "../types/addAdminTypes"
-import { validateAdmin,validateAdminLogin } from "../validate/addAdminValidate"
+import { IAddAdmin, ILoginAdmin, IChangePasswordAdmin, IResetPasswordAdminEmail, IResetPasswordAdminEmailValidate} from "../types/addAdminTypes"
+import { validateAdmin,validateAdminLogin, validateAdminChangePassword, validateAdminResetPasswordEmail, validateAdminResetPasswordValidate } from "../validate/addAdminValidate"
 import jwt from 'jsonwebtoken'
+import {sendMail} from "../middlewares/sendMail"
 import { Admin } from "../models/admin"
 import bcrypt from 'bcrypt'
 require('dotenv').config()
@@ -24,6 +25,14 @@ export const addAdminService = async function (body:IAddAdmin){
                 status:400,
                 message:'Error',
                 data:'Email already exists',
+            }
+        }
+        const numberExist = await Admin.findOne({phoneNumber})
+        if(numberExist){
+            return {
+                status:400,
+                message:'Error',
+                data:'PhoneNumber already exists',
             }
         }
         const newAdmin = new Admin({
@@ -329,6 +338,131 @@ export const deleteAdminService = async(adminId: string) =>{
         }
     }
 
+}
+
+export const changePasswordService = async(adminId: string, body:IChangePasswordAdmin)=>{
+    try {
+        const res = validateAdminChangePassword(body)
+        if(res.success === false){
+            return {
+                status: 500,
+                message: 'Validation failed',
+                data: res.data
+            }
+        }
+        const { oldPassword, newPassword, confirmPassword} = body
+        const exist = await Admin.findById(adminId).select("+password").exec()
+        if(!exist){
+            return {
+                status: 404,
+                message:'Failure',
+                data: "No Admin found",
+            }
+        }
+        const isMatch = await bcrypt.compare(oldPassword, exist.password);
+        if(!isMatch){
+            return {
+                status: 400,
+                message:'Password Not Correct',
+            }
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, +process.env.SALT_ROUNDS!)
+        exist.password = hashedPassword
+        await exist.save()
+        return {
+            status: 200,
+            message:'Success',
+            data: 'Password Changed Successfully',
+        }
+    }catch (err: any) {
+        return {
+            status: 400,
+            message: 'Error',
+            data: err.message
+        }
+    }
+}
+
+export const resetPasswordEmailService = async function(adminId: string, body:IResetPasswordAdminEmail){
+    try {
+        const res = validateAdminResetPasswordEmail(body)
+        if(res.success === false){
+            return {
+                status: 500,
+                message: 'Validation failed',
+                data: res.data
+            }
+        }
+        const {email} = body
+        const exist = await Admin.findOne({email}).exec()
+        if(!exist){
+            return {
+                status:400,
+                message:'Error',
+                data:'Admin Email does not exist. Please Check the Email And try again'
+            }
+        }
+        let mailer = await sendMail(email,'reset')
+        if(mailer){
+            return {
+                status: 200,
+                message:'Success',
+                data: 'Please Check Your Email To Continue Your Reset Password',
+            }
+        }
+        return {
+            status: 400,
+            message:'Error',
+            data: 'Error Sending Mail To Reset Password. Try Again Later.'
+        }
+    }catch (err: any) {
+        return {
+            status: 400,
+            message: 'Error',
+            data: err.message
+        }
+    }
+}
+
+export const resetPasswordEmailValidateService = async function(adminId: string, body:IResetPasswordAdminEmailValidate){
+    try {
+        const res = validateAdminResetPasswordValidate(body)
+        if(res.success === false){
+            return {
+                status: 500,
+                message: 'Validation failed',
+                data: res.data
+            }
+        }
+        const {email, newPassword, confirmPassword} = body
+        const userEmail = Buffer.from(email,"base64").toString();
+        console.log(userEmail);
+        
+        const exist = await Admin.findOne({email:userEmail}).select("+password").exec()
+        if(!exist){
+            return {
+                status:400,
+                message:'Error',
+                data:'Admin Email does not exist. Please Check the Email And try again'
+            }
+        }
+        console.log(exist);
+        
+        const hashedPassword = await bcrypt.hash(newPassword, +process.env.SALT_ROUNDS!)
+        exist.password = hashedPassword
+        await exist.save()
+        return {
+            status: 200,
+            message:'Success',
+            data: 'Password Changed Successfully',
+        }
+    }catch (err: any) {
+        return {
+            status: 400,
+            message: 'Error',
+            data: err.message
+        }
+    }
 }
 
 

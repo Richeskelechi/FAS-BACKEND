@@ -29,6 +29,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
             message:'Admin Email does not exist.'
         });
       }
+      req.user = verifiedAdmin.id
       return next();
     } catch (error) {
       return res.status(404).json({
