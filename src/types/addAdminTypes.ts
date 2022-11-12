@@ -1,4 +1,3 @@
-import {Request} from 'express'
 export interface IAddAdmin{
     fullname: string,
     email: string,

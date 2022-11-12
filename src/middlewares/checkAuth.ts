@@ -78,4 +78,38 @@ export const checkSuperAdmin = async (req: Request, res: Response, next: NextFun
         });
     }
 }
-module.exports = {verifyToken, checkSuperAdmin};
+
+export const checkEditorAdmin = async (req: Request, res: Response, next: NextFunction) =>{
+  if (req.headers.authorization) {
+      try {
+          const token = req.headers.authorization.split(" ")[1];
+          const decoded = <any>(jwt.verify(token, process.env.FEDOK_SECRET as string));
+        
+          const verifiedAdmin = await Admin.findById(decoded.id);
+          if(!verifiedAdmin){
+              return res.status(403).json({
+                  status:400,
+                  message:'Not Authorised, Invalid Admin'
+              });
+          }
+          if (verifiedAdmin?.access === "Reviewer") {
+              return res.status(403).json({
+                  status:400,
+                  message:'Not Authorised To Perform This Action'
+              });
+          }
+          return next();
+      }catch (error) {
+          return res.status(404).json({
+              status:400,
+              message:'UnAuthorized!. Please Login Again'
+          });
+      }
+  } else {
+      return res.status(404).json({
+          status:400,
+          message:'UnAuthorized!. Please Login Again'
+      });
+  }
+}
+module.exports = {verifyToken, checkSuperAdmin, checkEditorAdmin};

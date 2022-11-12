@@ -1,5 +1,5 @@
 import { IAddAdmin, ILoginAdmin, IChangePasswordAdmin, IResetPasswordAdminEmail, IResetPasswordAdminEmailValidate} from "../types/addAdminTypes"
-import { validateAdmin,validateAdminLogin, validateAdminChangePassword, validateAdminResetPasswordEmail, validateAdminResetPasswordValidate } from "../validate/addAdminValidate"
+import { validateAdmin,validateAdminLogin, validateAdminChangePassword, validateAdminResetPasswordEmail, validateAdminResetPasswordValidate, validateUpdateAdmin } from "../validate/addAdminValidate"
 import jwt from 'jsonwebtoken'
 import {sendMail} from "../middlewares/sendMail"
 import { Admin } from "../models/admin"
@@ -173,6 +173,14 @@ export const getSingleAdminService = async(adminId:string) =>{
 
 export const updateAdminService = async(adminId:string,body:IAddAdmin)=>{
     try {
+        const res = validateUpdateAdmin(body)
+        if(res.success === false){
+            return {
+                status: 500,
+                message: 'Validation failed',
+                data: res.data
+            }
+        }
         let admin = await Admin.findById(adminId).exec()
         if (!admin) {
             return {

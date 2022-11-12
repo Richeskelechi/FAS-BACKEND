@@ -1,5 +1,3 @@
-
-import { log } from "console";
 import {Request, Response} from "express";
 import { addAdminService, loginAdminService, getAllAdminService, getSingleAdminService, updateAdminService, changeAccessService, blockAdminService, deleteAdminService, changePasswordService, resetPasswordEmailService, resetPasswordEmailValidateService} from "../services/adminService"
 

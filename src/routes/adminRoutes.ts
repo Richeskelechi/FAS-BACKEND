@@ -7,7 +7,7 @@ const adminRouter = express.Router();
 adminRouter.post("/addAdmin", verifyToken, checkSuperAdmin, addAdmin);
 adminRouter.post("/loginAdmin", loginAdmin);
 adminRouter.get("/allAdmin",verifyToken, checkSuperAdmin, allAdmin);
-adminRouter.get("/admin/:id", verifyToken, singleAdmin);
+adminRouter.get("/singleAdmin/:id", verifyToken, singleAdmin);
 adminRouter.put("/updateAdmin/:id",verifyToken, updateAdmin);
 adminRouter.put("/changeAccess/:id",verifyToken, checkSuperAdmin, changeAccess);
 adminRouter.put("/blockAdmin/:id",verifyToken, checkSuperAdmin, blockAdmin);

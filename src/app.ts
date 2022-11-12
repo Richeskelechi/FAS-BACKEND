@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express';
 import adminRoute from './routes/adminRoutes';
+import contributionRouter from './routes/contributionRoutes';
 import cors from 'cors';
 import connectDB from './db/connectDB';
 
@@ -17,6 +18,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/admin/api/v1", adminRoute);
+app.use("/contribution/api/v1", contributionRouter);
 
 const startApp = async () =>{
     try{
@@ -32,4 +34,3 @@ const startApp = async () =>{
 }
 
 startApp();
-
