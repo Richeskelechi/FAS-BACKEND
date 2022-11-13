@@ -11,6 +11,7 @@ export const validateContribution = function(body:IAddContribution){
     }
     return {success:true}
 }
+
 export const validateUpdateContribution = function(body:IAddContribution){
     let errorArr = []
 
