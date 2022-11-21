@@ -107,8 +107,9 @@ export const loginAdminService = async function(body: ILoginAdmin){
         exist.password = fakepassword
 
         const token = jwt.sign({id:exist._id}, JWT_SECRET, {expiresIn:'1h'})
-        exist.last_login = new Date()
-        await exist.save()
+        await Admin.findOneAndUpdate({_id:exist._id}, {last_login :new Date()}, {
+            new: true
+        })
         return {
             status: 200,
             message: 'Success',

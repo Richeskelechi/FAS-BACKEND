@@ -1,4 +1,4 @@
-import { ICreateUser } from "../types/userTypes";
+import { ICreateUser, ILoginUser } from "../types/userTypes";
 
 
 export const validateUser = function(body:ICreateUser){
@@ -21,5 +21,25 @@ export const validateUser = function(body:ICreateUser){
     if(errorArr.length > 0){
         return {success:false, data:errorArr}
     }
+    return {success:true}
+}
+
+export const validateUserLogin = function(body:ILoginUser){
+    
+    const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
+    const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")
+    let errorArr = []
+    if(body.email == '') errorArr.push("Email is required")
+    if(body.password == '') errorArr.push("Password is required")
+    const isValidEmail = emailRegex.test(body.email);
+    const isValidPassword = passwordRegex.test(body.password)
+    if(!isValidEmail) errorArr.push("Email is not A valid Email address")
+    if(!isValidPassword) errorArr.push("Password Must Be up to 8 charcters and must contain both letters, numbers and special characters.")
+
+    if(errorArr.length > 0){
+        
+        return {success:false, data:errorArr}
+    }
+    
     return {success:true}
 }

@@ -9,3 +9,8 @@ export interface ICreateUser{
     address:string,
     occupation:string
 }
+
+export interface ILoginUser{
+    email: string,
+    password: string,
+}
