@@ -1,6 +1,6 @@
 import express from "express";
 
-import {addContribution, allContribution, singleContribution, updateContribution, editStatusContribution, deleteContribution} from "../controllers//contributionController"
+import {addContribution, allContribution, singleContribution, updateContribution, editStatusContribution, deleteContribution} from "../controllers/contributionController"
 import {verifyToken, checkEditorAdmin} from "../middlewares/checkAuth"
 const contributionRouter = express.Router();
 

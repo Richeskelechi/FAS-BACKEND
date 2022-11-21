@@ -107,6 +107,8 @@ export const loginAdminService = async function(body: ILoginAdmin){
         exist.password = fakepassword
 
         const token = jwt.sign({id:exist._id}, JWT_SECRET, {expiresIn:'1h'})
+        exist.last_login = new Date()
+        await exist.save()
         return {
             status: 200,
             message: 'Success',
@@ -451,6 +453,14 @@ export const resetPasswordEmailValidateService = async function(adminId: string,
                 status:400,
                 message:'Error',
                 data:'Admin Email does not exist. Please Check the Email And try again'
+            }
+        }
+
+        if(newPassword !== confirmPassword){
+            return {
+                status:400,
+                message:'Error',
+                data:'Password Do not match'
             }
         }
         

@@ -101,8 +101,6 @@ export const getSingleFunNumberByIDService = async(funNumberId:string) =>{
 
 export const getSingleFunNumberService = async(funNumber:string) =>{
     try {
-        console.log(funNumber);
-        
         const funNum = await Fun.findOne({funNumber:funNumber})
         if(!funNum){
             return {

@@ -3,6 +3,7 @@ import express from 'express';
 import adminRoute from './routes/adminRoutes';
 import contributionRouter from './routes/contributionRoutes';
 import funNumberRouter from './routes/funNumberRoutes'
+import userRouter from './routes/userRoutes'
 import cors from 'cors';
 import connectDB from './db/connectDB';
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/admin/api/v1", adminRoute);
 app.use("/contribution/api/v1", contributionRouter);
 app.use("/funNumber/api/v1", funNumberRouter);
+app.use("/user/api/v1", userRouter);
 
 const startApp = async () =>{
     try{

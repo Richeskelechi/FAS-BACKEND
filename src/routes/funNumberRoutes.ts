@@ -1,6 +1,6 @@
 import express from "express";
 
-import {addFunNumber, allFunNumber, singleFunNumberByID, singleFunNumber, updateFunNumber, deleteFunNumber} from "../controllers///funNumberController"
+import {addFunNumber, allFunNumber, singleFunNumberByID, singleFunNumber, updateFunNumber, deleteFunNumber} from "../controllers/funNumberController"
 import {verifyToken, checkEditorAdmin} from "../middlewares/checkAuth"
 const funNumberRouter = express.Router();
 
