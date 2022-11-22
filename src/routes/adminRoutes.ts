@@ -13,7 +13,7 @@ adminRouter.put("/changeAccess/:id",verifyToken, checkSuperAdmin, changeAccess);
 adminRouter.put("/blockAdmin/:id",verifyToken, checkSuperAdmin, blockAdmin);
 adminRouter.put("/deleteAdmin/:id",verifyToken, checkSuperAdmin, deleteAdmin);
 adminRouter.post("/changePasswordAdmin/:id",verifyToken, changePasswordAdmin);
-adminRouter.post("/resetPassword/:id",verifyToken, resetPasswordEmailAdmin);
-adminRouter.post("/resetPasswordVerify/:id",verifyToken, resetPasswordEmailValidateAdmin);
+adminRouter.post("/resetPassword", resetPasswordEmailAdmin);
+adminRouter.post("/resetPasswordVerify", resetPasswordEmailValidateAdmin);
 
 export default adminRouter;

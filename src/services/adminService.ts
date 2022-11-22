@@ -394,7 +394,7 @@ export const changePasswordService = async(adminId: string, body:IChangePassword
     }
 }
 
-export const resetPasswordEmailService = async function(adminId: string, body:IResetPasswordAdminEmail){
+export const resetPasswordEmailService = async function(body:IResetPasswordAdminEmail){
     try {
         const res = validateAdminResetPasswordEmail(body)
         if(res.success === false){
@@ -435,7 +435,7 @@ export const resetPasswordEmailService = async function(adminId: string, body:IR
     }
 }
 
-export const resetPasswordEmailValidateService = async function(adminId: string, body:IResetPasswordAdminEmailValidate){
+export const resetPasswordEmailValidateService = async function(body:IResetPasswordAdminEmailValidate){
     try {
         const res = validateAdminResetPasswordValidate(body)
         if(res.success === false){

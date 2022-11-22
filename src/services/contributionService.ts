@@ -52,11 +52,11 @@ export const addContributionService = async function (body:IAddContribution){
 
 export const getAllContributionService = async() =>{
     try {
-        const admin = await Contribution.find()
+        const allContribution = await Contribution.find()
         return {
             status: 200,
             message:'Success',
-            data: admin,
+            data: allContribution,
         }
     } catch (err: any) {
         return {
@@ -69,8 +69,8 @@ export const getAllContributionService = async() =>{
 
 export const getSingleContributionService = async(contributionId:string) =>{
     try {
-        let admin = await Contribution.findById(contributionId).exec()
-        if (!admin) {
+        let singleContribution = await Contribution.findById(contributionId).exec()
+        if (!singleContribution) {
             return {
                 status: 404,
                 message:'Failure',
@@ -80,7 +80,7 @@ export const getSingleContributionService = async(contributionId:string) =>{
         return {
             status: 200,
             message:'Success',
-            data: admin,
+            data: singleContribution,
         }
     } catch (err: any) {
         if (err.name === 'CastError') {
