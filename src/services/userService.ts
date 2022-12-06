@@ -26,7 +26,14 @@ export const validateFunNumberService = async(funNumber:string) =>{
                 data: "No Fun Number found. Please Contact Fedok12 Welfare Team To Get Your Fun Number",
             }
         }
-        let mailer = await sendFunMail(funNum.email,funNum.fullName,'create')
+        if(funNum.isValidated){
+            return {
+                status: 404,
+                message:'Failure',
+                data: "This Fun Number has already been validated. Please Try To Login",
+            }
+        }
+        let mailer = await sendFunMail(funNum.funNumber,funNum.email,funNum.fullName,'create')
         if(mailer){
             return {
                 status: 200,
@@ -53,7 +60,7 @@ export const createUserService = async function (body:ICreateUser){
                 data: res.data
             }
         }
-        const {fullname, email, phoneNumber, password, address, occupation} = body
+        const {fullname, email, funNumber, phoneNumber, password, address, occupation} = body
         const exist = await User.findOne({email})
         if(exist){
             return {
@@ -73,6 +80,7 @@ export const createUserService = async function (body:ICreateUser){
         const newUser = new User({
             fullname: fullname,
             email: email,
+            funNumber:funNumber,
             phoneNumber:phoneNumber,
             password: password,
             address: address,
@@ -81,6 +89,9 @@ export const createUserService = async function (body:ICreateUser){
         const hashedPassword = await bcrypt.hash(newUser.password, +process.env.SALT_ROUNDS!);
         newUser.password = hashedPassword;
         await newUser.save()
+        await Fun.findOneAndUpdate({funNumber:funNumber}, {isValidated:true}, {
+            new: true
+        });
         return {
             status: 201,
             message: 'Success',

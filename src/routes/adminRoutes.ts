@@ -1,6 +1,6 @@
 import express from "express";
 
-import {addAdmin, loginAdmin, allAdmin, singleAdmin, updateAdmin, changeAccess, blockAdmin, deleteAdmin, changePasswordAdmin, resetPasswordEmailAdmin, resetPasswordEmailValidateAdmin} from "../controllers/adminController"
+import {addAdmin, loginAdmin, allAdmin, singleAdmin, updateAdmin, changeAccess, blockAdmin, deleteAdmin, changePasswordAdmin, resetPasswordEmailAdmin, resetPasswordEmailValidateAdmin, allUsers, singleUser, blockUser} from "../controllers/adminController"
 import {verifyToken, checkSuperAdmin} from "../middlewares/checkAuth"
 const adminRouter = express.Router();
 
@@ -15,5 +15,8 @@ adminRouter.put("/deleteAdmin/:id",verifyToken, checkSuperAdmin, deleteAdmin);
 adminRouter.post("/changePasswordAdmin/:id",verifyToken, changePasswordAdmin);
 adminRouter.post("/resetPassword", resetPasswordEmailAdmin);
 adminRouter.post("/resetPasswordVerify", resetPasswordEmailValidateAdmin);
+adminRouter.get("/:id/allUsers",verifyToken, allUsers);
+adminRouter.get("/:id/singleUser/:userId",verifyToken, singleUser);
+adminRouter.put("/:id/blockUser/:userId",verifyToken, checkSuperAdmin, blockUser);
 
 export default adminRouter;

@@ -14,6 +14,12 @@ const userSchema = new Schema<ICreateUser>({
         required: true,
         unique: true,
     },
+    funNumber:{
+        type: String,
+        trim: true,
+        required: true,
+        unique: true,
+    },
     phoneNumber: {
         type: String,
         trim: true,

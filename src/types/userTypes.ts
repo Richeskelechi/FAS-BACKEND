@@ -1,6 +1,7 @@
 export interface ICreateUser{
     fullname: string,
     email: string,
+    funNumber: string,
     password: string,
     confirmPassword: string,
     isActive: string,

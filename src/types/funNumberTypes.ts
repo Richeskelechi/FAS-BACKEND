@@ -3,5 +3,6 @@ export interface IAddFunNumber{
     funNumber: string,
     fullName: string
     email:string;
+    isValidated: boolean,
     isActive:boolean;
 }

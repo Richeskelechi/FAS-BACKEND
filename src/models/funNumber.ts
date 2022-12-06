@@ -13,7 +13,6 @@ const funNumberSchema = new Schema<IAddFunNumber>({
         trim: true,
         required: true,
         unique: true,
-
     },
     fullName: {
         type: String,
@@ -24,6 +23,11 @@ const funNumberSchema = new Schema<IAddFunNumber>({
         type: String,
         required: true,
         unique:true
+    },
+    isValidated:{
+        type: Boolean,
+        required: true,
+        default:false
     },
     isActive: {
         type: Boolean,

@@ -3,6 +3,7 @@ import { validateAdmin,validateAdminLogin, validateAdminChangePassword, validate
 import jwt from 'jsonwebtoken'
 import {sendMail} from "../middlewares/sendMail"
 import { Admin } from "../models/admin"
+import { User } from "../models/user"
 import bcrypt from 'bcrypt'
 require('dotenv').config()
 
@@ -480,6 +481,96 @@ export const resetPasswordEmailValidateService = async function(body:IResetPassw
             data: err.message
         }
     }
+}
+
+export const getAllUserService = async() =>{
+    try {
+        const allUsers = await User.find()
+        return {
+            status: 200,
+            message:'Success',
+            data: allUsers,
+        }
+    } catch (err: any) {
+        return {
+            status: 500,
+            message: 'Failed to get User Data',
+            data: err.message,
+        }
+    }
+}
+
+export const getSingleUserService = async(userId:string) =>{
+    try {
+        let user = await User.findById(userId).exec()
+        if (!user) {
+            return {
+                status: 404,
+                message:'Failure',
+                data: "No User found",
+            }
+        }
+        return {
+            status: 200,
+            message:'Success',
+            data: user,
+        }
+    } catch (err: any) {
+        if (err.name === 'CastError') {
+            return {
+                status: 500,
+                message: 'Failed to get a User with the specified id',
+                data: err.message,
+            }
+        }
+        return {
+            status: 500,
+            message: 'Failed to get a User with the specified id',
+            data: err.message,
+        }
+    }
+}
+
+export const blockUserService = async(userId:string) =>{
+    try {
+        let user = await User.findById(userId).exec()
+        if (!user) {
+            return {
+                status: 404,
+                message:'Failure',
+                data: "No User found",
+            }
+        }else {
+            if(user.isActive ==='Active'){
+                await Admin.findOneAndUpdate({_id:user}, {isActive:"Blocked"}, {
+                    new: true
+                })
+            }else if(user.isActive ==='Blocked'){
+                await Admin.findOneAndUpdate({_id:user}, {isActive:"Active"}, {
+                    new: true
+                })
+            }
+            return {
+                status: 200,
+                message:'Success', 
+                data: "Operation Executed successfully",
+            }
+        }
+    }catch (err: any) {
+        if (err.name === 'CastError') {
+            return {
+                status: 500,
+                message: 'Failed to get a User with the specified id',
+                data: err.message,
+            }
+        }
+        return {
+            status: 500,
+            message: 'Failed to get a User with the specified id',
+            data: err.message,
+        }
+    }
+
 }
 
 

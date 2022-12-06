@@ -30,14 +30,15 @@ export const sendMail = async(email: string, type:string)=>{
     }
 }
 
-export const sendFunMail = async(email: string, name:string, type:string)=>{
+export const sendFunMail = async(funNumber:string,email: string, name:string, type:string)=>{
     let msgBody = ""
     let title = ""
     if(type == 'create'){
         title = 'Create Account'
         let encodeEmail = Buffer.from(email).toString('base64')
+        let encodeFunNumber = Buffer.from(funNumber).toString('base64')
         let encodeName = Buffer.from(name).toString('base64')
-        let button = `<br/><br/><center><a href=${BASE_URL}/authenticate/?email=${encodeEmail}&name=${encodeName}> Create Account</a></center>`
+        let button = `<br/><br/><center><a href=${BASE_URL}/authenticate/?funNumber=${encodeFunNumber}&email=${encodeEmail}&name=${encodeName}> Create Account</a></center>`
         msgBody = `Dear ${name}\nThank You For Patterning And Trusting Us With Your Fund. Your Account Creation Link Was Initiated Successfully. Please Click On The Link Below To Create A New Account.\n${button}`
     }
     let msg = <IMailBody>{
@@ -46,7 +47,6 @@ export const sendFunMail = async(email: string, name:string, type:string)=>{
         subject:title,
         text:msgBody,
         html:msgBody
-
     };
     try {
         await mailer.send(msg)

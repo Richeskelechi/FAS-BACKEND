@@ -6,6 +6,7 @@ export const validateUser = function(body:ICreateUser){
     let errorArr = []
     if(body.fullname == '') errorArr.push("Fullname is required")
     if(body.email == '') errorArr.push("Email is required")
+    if(body.funNumber =='') errorArr.push("FunNumber is required")
     if(body.phoneNumber == '') errorArr.push("Phone Number is required");
     if(body.address == '') errorArr.push("User Address is required");
     if(body.occupation == '') errorArr.push("User Occupation is required");
