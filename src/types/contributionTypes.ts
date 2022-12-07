@@ -1,7 +1,7 @@
-export interface IAddContribution{
-    adminId: string;
-    contributionName: string,
-    contributionDescription: string
-    contributionStatus:string;
-    isActive:boolean;
+export interface IAddContributions{
+    adminId: string,
+    eventId: string,
+    contributorName: string,
+    contributionAmount:number;
+    isActive:boolean
 }

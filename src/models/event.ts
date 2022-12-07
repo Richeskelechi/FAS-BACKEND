@@ -1,33 +1,33 @@
 import { Schema, model } from "mongoose";
 
-import { IAddContributions } from "../types/contributionTypes";
+import { IAddEvents } from "../types/eventTypes";
 
-const contributionSchema = new Schema<IAddContributions>({
+const eventSchema = new Schema<IAddEvents>({
     adminId: {
         type: String,
         trim: true,
         required: true,
     },
-    eventId: {
+    eventName: {
         type: String,
         trim: true,
         required: true,
     },
-    contributorName: {
+    eventDescription: {
         type: String,
         trim: true,
         required: true,
     },
-    contributionAmount: {
-        type: Number,
-        trim: true,
+    eventStatus: {
+        type: String,
         required: true,
+        default: "Ongoing"
     },
     isActive: {
         type: Boolean,
-        default: true,
         required: true,
+        default:true
     }
 },{timestamps:true})
 
-export const Contribution = model('Contribution', contributionSchema);  
+export const Event = model('Event', eventSchema);  

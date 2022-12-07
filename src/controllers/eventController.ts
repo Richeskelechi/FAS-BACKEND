@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
-import { addContributionService, getAllContributionService, getSingleContributionService, getSingleEventContributionService, updateContributionService, deleteContributionService} from "../services/contributionService"
+import { addEventService, getAllEventService, getSingleEventService, updateEventService, editEventStatusService, deleteEventService} from "../services/eventService"
 
-export const addContribution = async(req: Request, res: Response) => {
+export const addEvent = async(req: Request, res: Response) => {
     try {
         if(req.user){
-            const response = await addContributionService(req.body)
+            const response = await addEventService(req.body)
             return res.status(response.status).json(response)
         }else{
             return res.status(400).json({
@@ -17,10 +17,10 @@ export const addContribution = async(req: Request, res: Response) => {
     }
 }
 
-export const allContribution = async(req: Request, res: Response) => {
+export const allEvent = async(req: Request, res: Response) => {
     try{
         if(req.user){
-            const response = await getAllContributionService()
+            const response = await getAllEventService()
             return res.status(response.status).json(response)
         }else{
             return res.status(401).json({
@@ -33,11 +33,11 @@ export const allContribution = async(req: Request, res: Response) => {
     }
 };
 
-export const singleContribution= async(req: Request, res: Response) => {
+export const singleEvent= async(req: Request, res: Response) => {
     try {
-        const {contributionId} = req.params
+        const {id:eventId} = req.params
         if(req.user){
-            const response = await getSingleContributionService(contributionId)
+            const response = await getSingleEventService(eventId)
             return res.status(response.status).json(response)
         }else{
             return res.status(401).json({
@@ -50,53 +50,53 @@ export const singleContribution= async(req: Request, res: Response) => {
     }
 }
 
-export const singleEventContribution= async(req: Request, res: Response) => {
+export const updateEvent = async(req:Request, res: Response) => {
     try {
-        const {eventId} = req.params
+        const {id:eventId} = req.params
         if(req.user){
-            const response = await getSingleEventContributionService(eventId)
+            const response = await updateEventService(eventId, req.body)
             return res.status(response.status).json(response)
         }else{
             return res.status(401).json({
                 status:401,
                 message: "Unauthorized User"
             })
-        } 
+        }
     } catch (error) {
         return res.status(500).json(error)
     }
-}
+};
 
-export const updateContribution= async(req: Request, res: Response) => {
+export const editStatusEvent = async(req:Request, res: Response) => {
     try {
-        const {contributionId} = req.params
+        const {id:eventId} = req.params;
         if(req.user){
-            const response = await updateContributionService(contributionId, req.body)
+            const response = await editEventStatusService(eventId)
             return res.status(response.status).json(response)
         }else{
             return res.status(401).json({
                 status:401,
                 message: "Unauthorized User"
             })
-        } 
+        }
     } catch (error) {
         return res.status(500).json(error)
     }
-}
+};
 
-export const deleteContribution= async(req: Request, res: Response) => {
+export const deleteEvent = async(req:Request, res: Response) => {
     try {
-        const {contributionId} = req.params
+        const {id:eventId} = req.params
         if(req.user){
-            const response = await deleteContributionService(contributionId)
+            const response = await deleteEventService(eventId)
             return res.status(response.status).json(response)
         }else{
             return res.status(401).json({
                 status:401,
                 message: "Unauthorized User"
             })
-        } 
+        }
     } catch (error) {
         return res.status(500).json(error)
     }
-}
+};

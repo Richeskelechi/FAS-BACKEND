@@ -1,9 +1,10 @@
 import 'dotenv/config'
-import express from 'express';
-import adminRoute from './routes/adminRoutes';
-import contributionRouter from './routes/contributionRoutes';
+import express, { application } from 'express';
+import adminRouter from './routes/adminRoutes';
 import funNumberRouter from './routes/funNumberRoutes'
 import userRouter from './routes/userRoutes'
+import eventRouter from './routes/eventRoutes';
+import contributionRouter from './routes/contributionRoutes';
 import cors from 'cors';
 import connectDB from './db/connectDB';
 
@@ -19,10 +20,11 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/admin/api/v1", adminRoute);
-app.use("/contribution/api/v1", contributionRouter);
+app.use("/admin/api/v1", adminRouter);
+app.use("/event/api/v1", eventRouter);
 app.use("/funNumber/api/v1", funNumberRouter);
 app.use("/user/api/v1", userRouter);
+app.use('/contribution/api/v1', contributionRouter);
 
 const startApp = async () =>{
     try{

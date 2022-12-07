@@ -1,22 +1,23 @@
-import { IAddContribution } from "../types/contributionTypes";
+import { IAddContributions } from "../types/contributionTypes";
 
-
-export const validateContribution = function(body:IAddContribution){
+export const validateContribution = function(body:IAddContributions){
     let errorArr = []
     if(body.adminId == '') errorArr.push("Admin Id is required")
-    if(body.contributionName == '') errorArr.push("Contribution Name is required")
-    if(body.contributionDescription == '') errorArr.push("Contribution Description is required");
+    if(body.eventId == '') errorArr.push("Event Id is required")
+    if(body.contributorName == '') errorArr.push("Contributor's Name is required")
+    if(body.contributionAmount < 0) errorArr.push("Contribution Amount Must be greater than zero");
     if(errorArr.length > 0){
         return {success:false, data:errorArr}
     }
     return {success:true}
 }
 
-export const validateUpdateContribution = function(body:IAddContribution){
+export const validateUpdateContribution = function(body:IAddContributions){
     let errorArr = []
-
-    if(body.contributionName == '')errorArr.push("contribution Name is required")
-    if(body.contributionDescription == '')errorArr.push("contribution Description is required")
+    if(body.adminId == '') errorArr.push("Admin Id is required")
+    if(body.eventId == '') errorArr.push("Event Id is required")
+    if(body.contributorName == '')errorArr.push("contributor's Name is required")
+    if(body.contributionAmount < 0) errorArr.push("Contribution Amount Must be greater than zero");
     if(errorArr.length > 0)return {success:false, data:errorArr}
     return {success:true}
 }

@@ -1,8 +1,8 @@
 export interface IAddFunNumber{
-    adminId: string;
+    adminId: string,
     funNumber: string,
-    fullName: string
-    email:string;
+    fullName: string,
+    email:string,
     isValidated: boolean,
     isActive:boolean;
 }

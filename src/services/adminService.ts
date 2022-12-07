@@ -542,11 +542,11 @@ export const blockUserService = async(userId:string) =>{
             }
         }else {
             if(user.isActive ==='Active'){
-                await Admin.findOneAndUpdate({_id:user}, {isActive:"Blocked"}, {
+                await User.findOneAndUpdate({_id:userId}, {isActive:"Blocked"}, {
                     new: true
                 })
             }else if(user.isActive ==='Blocked'){
-                await Admin.findOneAndUpdate({_id:user}, {isActive:"Active"}, {
+                await User.findOneAndUpdate({_id:userId}, {isActive:"Active"}, {
                     new: true
                 })
             }
