@@ -85,10 +85,26 @@ export const getSingleContributionService = async(contributionId:string) =>{
                 data: "No Contribution found",
             }
         }
+        let eventDetails = await Event.findById(singleContribution.eventId).exec()
+        if (!eventDetails) {
+            return {
+                status: 404,
+                message:'Failure',
+                data: "No Event found",
+            }
+        }
+        let newContributionDetails ={
+            _id: singleContribution._id,
+            adminId: singleContribution.adminId,
+            eventId: singleContribution.eventId,
+            eventName: eventDetails.eventName,
+            contributorName: singleContribution.contributorName,
+            contributionAmount: singleContribution.contributionAmount,
+        }
         return {
             status: 200,
             message:'Success',
-            data: singleContribution,
+            data: newContributionDetails,
         }
     } catch (err: any) {
         if (err.name === 'CastError') {
