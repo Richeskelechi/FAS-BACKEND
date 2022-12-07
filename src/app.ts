@@ -5,6 +5,7 @@ import funNumberRouter from './routes/funNumberRoutes'
 import userRouter from './routes/userRoutes'
 import eventRouter from './routes/eventRoutes';
 import contributionRouter from './routes/contributionRoutes';
+import complainRouter from './routes/complainRoutes';
 import cors from 'cors';
 import connectDB from './db/connectDB';
 
@@ -25,6 +26,7 @@ app.use("/event/api/v1", eventRouter);
 app.use("/funNumber/api/v1", funNumberRouter);
 app.use("/user/api/v1", userRouter);
 app.use('/contribution/api/v1', contributionRouter);
+app.use('/complain/api/v1', complainRouter);
 
 const startApp = async () =>{
     try{

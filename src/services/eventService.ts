@@ -143,8 +143,6 @@ export const updateEventService = async(eventnId:string,body:IAddEvents)=>{
 export const editEventStatusService = async(eventnId: string) =>{
     try {
         let event = await Event.findById(eventnId).exec()
-        console.log(event);
-        
         if (!event) {
             return {
                 status: 404,
