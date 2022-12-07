@@ -178,7 +178,6 @@ export const getAllAdminComplaintService = async() =>{
 export const editAdminComplainService = async(complainId: string) =>{
     try {
         let singleComplain = await Complaint.findById(complainId).exec()
-        console.log(singleComplain);
         if (!singleComplain) {
             return {
                 status: 404,
