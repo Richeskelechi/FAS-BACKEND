@@ -16,7 +16,6 @@ export const addFunNumberService = async function (body:IAddFunNumber){
         }
         const {adminId, funNumber, fullName, email} = body
         const admin = await Admin.findOne({_id:adminId})
-        console.log(admin);
         
         if(!admin){
             return {
@@ -25,6 +24,16 @@ export const addFunNumberService = async function (body:IAddFunNumber){
                 data: null
             }
         }
+
+        const funExist = await Fun.findOne({funNumber:funNumber})
+        if(funExist){
+            return {
+                status: 500,
+                message: 'Fun Number already exists',
+                data: null
+            }
+        }
+        
         const newFunNumber = new Fun({
             adminId: adminId,
             funNumber: funNumber,
