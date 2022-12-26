@@ -147,7 +147,7 @@ export const updateFunNumberService = async(funNumberId:string,body:IAddFunNumbe
             return {
                 status: 404,
                 message:'Failure',
-                data: "No Contribution found",
+                data: "No FUN Deatils Found found",
             }
         }
         let updatedFunDetails = await Fun.findOneAndUpdate({_id:funNumberId}, body, {
@@ -168,7 +168,7 @@ export const updateFunNumberService = async(funNumberId:string,body:IAddFunNumbe
         }
         return {
             status: 500,
-            message: 'Failed to get a Fun Details',
+            message: 'FUN Number Already Exists',
             data: err.message,
         }
     }
