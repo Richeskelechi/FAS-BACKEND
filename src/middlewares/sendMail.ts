@@ -11,7 +11,7 @@ export const sendMail = async(email: string, type:string)=>{
     if(type == 'reset'){
         title = 'Password Reset'
         let encode = Buffer.from(email).toString('base64')
-        let button = `<br/><br/><center><a href=${BASE_URL}/authenticate/?email=${encode}> Reset Password</a></center>`
+        let button = `<br/><br/><center><a href=${BASE_URL}?email=${encode}> Reset Password</a></center>`
         msgBody = `Dear ${email}<br />Thank You For Patterning And Trusting Us With Your Fund. Your Password Reset Was Initiated Successfully. Please Click On The Link Below To Reset Your Password.<br />${button}`
     }
     let msg = <IMailBody>{
