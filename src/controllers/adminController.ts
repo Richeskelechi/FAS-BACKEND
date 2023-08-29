@@ -80,7 +80,7 @@ export const changeAccess = async(req:Request, res: Response) => {
     try {
         const {id:adminId} = req.params
         if(req.user === adminId){
-            const response = await changeAccessService(adminId, req.body)
+            const response = await changeAccessService(req.body)
             return res.status(response.status).json(response)
         }else{
             return res.status(401).json({

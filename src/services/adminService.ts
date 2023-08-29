@@ -1,4 +1,4 @@
-import { IAddAdmin, ILoginAdmin, IChangePasswordAdmin, IResetPasswordAdminEmail, IResetPasswordAdminEmailValidate} from "../types/addAdminTypes"
+import { IAddAdmin, ILoginAdmin, IChangePasswordAdmin, IResetPasswordAdminEmail, IResetPasswordAdminEmailValidate, IAdminAccess} from "../types/addAdminTypes"
 import { validateAdmin,validateAdminLogin, validateAdminChangePassword, validateAdminResetPasswordEmail, validateAdminResetPasswordValidate, validateUpdateAdmin } from "../validate/addAdminValidate"
 import jwt from 'jsonwebtoken'
 import {sendMail} from "../middlewares/sendMail"
@@ -217,22 +217,18 @@ export const updateAdminService = async(adminId:string,body:IAddAdmin)=>{
     }
 }
 
-export const changeAccessService = async(adminId: string, body:IAddAdmin) =>{
+export const changeAccessService = async(body:IAdminAccess) =>{
     try {
-        let admin = await Admin.findById(adminId).exec()
+        let admin = await Admin.findById(body.adminId).exec()
         if (!admin) {
             return {
                 status: 404,
                 message:'Failure',
                 data: "No Admin found",
             }
-        }else if(admin.access === 'Super'){
-            return {
-                status: 400,
-                data: "Sorry! A Super Admin Cannot Access",
-            }
         }else {
-            await Admin.findOneAndUpdate({_id:adminId}, body, {
+            let updateBody = {access: body.access};
+            await Admin.findOneAndUpdate({_id:body.adminId}, updateBody, {
                 new: true
             })
             return {

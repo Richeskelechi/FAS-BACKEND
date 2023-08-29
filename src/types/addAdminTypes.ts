@@ -34,3 +34,8 @@ export interface IResetPasswordAdminEmailValidate{
     newPassword: string,
     confirmPassword: string
 }
+
+export interface IAdminAccess{
+    access:string
+    adminId: string,
+}

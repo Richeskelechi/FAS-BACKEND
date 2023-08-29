@@ -30,7 +30,7 @@ app.use('/complain/api/v1', complainRouter);
 
 const startApp = async () =>{
     try{
-        await connectDB(process.env.DATABASE_URL!);
+        await connectDB(process.env.DATABASE_URL_Live!);
         const port= process.env.PORT || 3030;
         app.listen(port, () => {
             console.log(`The application is listening on port ${port}! And Database is Connected`);

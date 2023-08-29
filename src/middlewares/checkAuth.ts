@@ -11,6 +11,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
       const decoded = <any>(jwt.verify(token, process.env.FEDOK_SECRET as string));
       
       const verifiedAdmin = await Admin.findById(decoded.id);
+
       if(!verifiedAdmin){
         return res.status(403).json({
             status:400,
@@ -64,6 +65,10 @@ export const checkSuperAdmin = async (req: Request, res: Response, next: NextFun
                     message:'Not Authorised To Perform This Action'
                 });
             }
+            console.log("I am authenticated");
+            console.log(verifiedAdmin);
+            
+            
             return next();
         }catch (error) {
             return res.status(404).json({
