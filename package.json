@@ -10,6 +10,9 @@
     "dev": "nodemon dist/app.js",
     "clean": "rm -fr dist && mkdir dist"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Richeskelechi/FAS-BACKEND.git"
