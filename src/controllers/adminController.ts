@@ -1,214 +1,267 @@
-import {Request, Response} from "express";
-import { addAdminService, loginAdminService, getAllAdminService, getSingleAdminService, updateAdminService, changeAccessService, blockAdminService, deleteAdminService, changePasswordService, resetPasswordEmailService, resetPasswordEmailValidateService, getAllUserService, getSingleUserService, blockUserService} from "../services/adminService"
+import { Request, Response } from "express";
+import { addAdminService, loginAdminService, getAllAdminService, getSingleAdminService, updateAdminService, changeAccessService, blockAdminService, deleteAdminService, changePasswordService, resetPasswordEmailService, resetPasswordEmailValidateService, getAllUserService, getSingleUserService, blockUserService } from "../services/adminService"
 
-export const addAdmin = async(req: Request, res: Response) => {
+export const addAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        if(req.user){
-            const response = await addAdminService(req.body)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(400).json({
-                status:400,
-                message: "Unauthorized User"
-            })
+        if (!req.user) {
+            res.status(401).json({
+                status: 401,
+                message: "Unauthorized User",
+            });
+            return; // Ensure function ends here
         }
-    } catch (error) {
-        return res.status(500).json(error)
-    }
-}
 
-export const loginAdmin = async(req: Request, res: Response) => {
-    try {
-        const response = await loginAdminService(req.body)
-        return res.status(response.status).json(response)
-    } catch (error) {
-        return res.status(500).json(error)
-    }
-}
+        const response = await addAdminService(req.body);
+        res.status(response.status).json(response); // Send response
 
-export const allAdmin = async(req: Request, res: Response) => {
-    try{
-        if(req.user){
-            const response = await getAllAdminService()
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
-        }
-    }catch(err){
-        return res.status(500).json(err)
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
 };
 
-export const singleAdmin = async(req: Request, res: Response) => {
+export const loginAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id:adminId} = req.params
-        if(req.user === adminId){
-            const response = await getSingleAdminService(adminId)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
-        } 
+        const response = await loginAdminService(req.body);
+        res.status(response.status).json(response);
     } catch (error) {
-        return res.status(500).json(error)
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
-}
+};
 
-export const updateAdmin = async(req:Request, res: Response) => {
+export const allAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id:adminId} = req.params
-        if(req.user === adminId){
-            const response = await updateAdminService(adminId, req.body)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
+        if (!req.user) {
+            res.status(401).json({
+                status: 401,
+                message: "Unauthorized User",
+            });
+            return;
         }
-    } catch (error) {
-        return res.status(500).json(error)
+
+        const response = await getAllAdminService();
+        res.status(response.status).json(response);
+    } catch (err) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: err instanceof Error ? err.message : err,
+        });
     }
 };
 
-export const changeAccess = async(req:Request, res: Response) => {
+export const singleAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id:adminId} = req.params
-        if(req.user === adminId){
-            const response = await changeAccessService(req.body)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
+        const { id: adminId } = req.params;
+
+        if (req.user !== adminId) {
+            res.status(401).json({
+                status: 401,
+                message: "Unauthorized User",
+            });
+            return;
         }
+
+        const response = await getSingleAdminService(adminId);
+        res.status(response.status).json(response);
     } catch (error) {
-        return res.status(500).json(error)
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
 };
 
-export const blockAdmin = async(req:Request, res: Response) => {
+export const updateAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id:adminId} = req.params
-        if(req.user === adminId){
-            const response = await blockAdminService(adminId)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
+        const { id: adminId } = req.params;
+
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
         }
+
+        const response = await updateAdminService(adminId, req.body);
+        res.status(response.status).json(response);
     } catch (error) {
-        return res.status(500).json(error)
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
 };
 
-export const deleteAdmin = async(req:Request, res: Response) => {
+export const changeAccess = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id:adminId} = req.params
-        if(req.user === adminId){
-            const response = await deleteAdminService(adminId)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
+        const { id: adminId } = req.params;
+
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
         }
+
+        const response = await changeAccessService(req.body);
+        res.status(response.status).json(response);
     } catch (error) {
-        return res.status(500).json(error)
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
 };
 
-export const changePasswordAdmin = async(req:Request, res: Response) => {
+export const blockAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id:adminId} = req.params
-        if(req.user === adminId){
-            const response = await changePasswordService(adminId, req.body)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
+        const { id: adminId } = req.params;
+
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
         }
+
+        const response = await blockAdminService(adminId);
+        res.status(response.status).json(response);
     } catch (error) {
-        return res.status(500).json(error)
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
 };
 
-export const resetPasswordEmailAdmin = async(req:Request, res: Response) => {
+export const deleteAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await resetPasswordEmailService(req.body)
-        return res.status(response.status).json(response)
-    } catch (error) {
-        return res.status(500).json(error)
-    }
-};
+        const { id: adminId } = req.params;
 
-export const resetPasswordEmailValidateAdmin = async(req:Request, res: Response) => {
-    try {
-        const response = await resetPasswordEmailValidateService(req.body)
-        return res.status(response.status).json(response)
-    } catch (error) {
-        return res.status(500).json(error)
-    }
-};
-
-export const allUsers = async(req: Request, res: Response) => {
-    try{
-        const {id:adminId} = req.params
-        if(req.user === adminId){
-            const response = await getAllUserService()
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
         }
-    }catch(err){
-        return res.status(500).json(err)
+
+        const response = await deleteAdminService(adminId);
+        res.status(response.status).json(response);
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
 };
 
-export const singleUser = async(req: Request, res: Response) => {
+export const changePasswordAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id:adminId, userId:userId} = req.params
-        if(req.user === adminId){
-            const response = await getSingleUserService(userId)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
-        } 
-    } catch (error) {
-        return res.status(500).json(error)
-    }
-}
+        const { id: adminId } = req.params;
 
-export const blockUser = async(req:Request, res: Response) => {
-    try {
-        const {id:adminId, userId:userId} = req.params
-        if(req.user === adminId){
-            const response = await blockUserService(userId)
-            return res.status(response.status).json(response)
-        }else{
-            return res.status(401).json({
-                status:401,
-                message: "Unauthorized User"
-            })
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
         }
+
+        const response = await changePasswordService(adminId, req.body);
+        res.status(response.status).json(response);
     } catch (error) {
-        return res.status(500).json(error)
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
+    }
+};
+
+export const resetPasswordEmailAdmin = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const response = await resetPasswordEmailService(req.body);
+        res.status(response.status).json(response);
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
+    }
+};
+
+export const resetPasswordEmailValidateAdmin = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const response = await resetPasswordEmailValidateService(req.body);
+        res.status(response.status).json(response);
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
+    }
+};
+
+export const allUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id: adminId } = req.params;
+
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
+        }
+
+        const response = await getAllUserService();
+        res.status(response.status).json(response);
+    } catch (err) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: err instanceof Error ? err.message : err,
+        });
+    }
+};
+
+export const singleUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id: adminId, userId } = req.params;
+
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
+        }
+
+        const response = await getSingleUserService(userId);
+        res.status(response.status).json(response);
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
+    }
+};
+
+export const blockUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id: adminId, userId } = req.params;
+
+        if (req.user === adminId) {
+            res.status(401).json({ status: 401, message: "Unauthorized User" });
+            return;
+        }
+
+        const response = await blockUserService(userId);
+        res.status(response.status).json(response);
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : error,
+        });
     }
 };

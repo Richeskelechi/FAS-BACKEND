@@ -6,6 +6,7 @@ import userRouter from './routes/userRoutes'
 import eventRouter from './routes/eventRoutes';
 import contributionRouter from './routes/contributionRoutes';
 import complainRouter from './routes/complainRoutes';
+import serverRouter from './routes/serverRoutes';
 import cors from 'cors';
 import connectDB from './db/connectDB';
 
@@ -21,6 +22,7 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("", serverRouter);
 app.use("/admin/api/v1", adminRouter);
 app.use("/event/api/v1", eventRouter);
 app.use("/funNumber/api/v1", funNumberRouter);
